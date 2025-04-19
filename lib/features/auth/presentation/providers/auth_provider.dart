@@ -40,11 +40,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   void checkAuthStatus() async {
+  // ✅ se especifica el tipo <String> al obtener el token
     final token = await keyValueStorageService.getValue<String>('token');
 
     if (token == null) return logout();
     try {
       final user = await authRepositorio.checkAuthStatus(token);
+      final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+      if (user.exp != null && now >= user.exp!) {
+        return logout('Sesion expirada');
+      }
       _setLoggedUser(user);
     } catch (e) {
       logout();
@@ -52,7 +57,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   void _setLoggedUser(Usuario user) async {
-    await keyValueStorageService.setKeyValue('token', user.token);
+   if (user.token != null && user.token is String) {
+    await keyValueStorageService.setKeyValue<String>('token', user.token!);
+  }
 
     state = state.copyWith(
         user: user, authStatus: AuthStatus.authenticated, errorMessage: '');

@@ -1,5 +1,8 @@
+import 'package:autonort/features/auth/infraestructura/infraestructura.dart';
 import 'package:autonort/features/auth/presentation/providers/auth_provider.dart';
+import 'package:autonort/features/auth/presentation/widgets/dialogo_carga_login.dart';
 import 'package:autonort/features/shared/shared.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 
@@ -33,7 +36,11 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
         isValid: Formz.validate([nuevoPassword, state.usuarionick]));
   }
 
-  onFormSubmit(bool isRegistering) async {
+  Future<void> onFormSubmit(
+      {required BuildContext context,
+      required bool isRegistering,
+      required String codempresa,
+      required String esinvitado}) async {
     _touchEveryField();
     if (!state.isValid) return;
     //validar
@@ -43,8 +50,40 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
     } else {
       state = state.copyWhith(isPosting: true);
       //si es un login llamamos al callback de login
-      await loginUserCallback(
-          '', '', state.usuarionick.value, state.password.value);
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) =>
+            const DialogoCargaLogin(estado: DialogoCargaLoginEstado.cargando),
+      );
+      try {
+        await loginUserCallback(codempresa, esinvitado, state.usuarionick.value,
+            state.password.value);
+
+        if (!context.mounted) return;
+        Navigator.of(context).pop();
+      } on CustomError {
+        if (!context.mounted) return;
+        Navigator.of(context).pop(); // Cierra el diálogo de carga
+        showDialog(
+          context: context,
+          builder: (_) => const DialogoCargaLogin(
+              estado: DialogoCargaLoginEstado.credencialesIncorrectas),
+        );
+        await Future.delayed(const Duration(seconds: 2));
+        if (context.mounted) Navigator.of(context).pop();
+      } catch (_) {
+        if (!context.mounted) return;
+        Navigator.of(context).pop();
+        showDialog(
+          context: context,
+          builder: (_) => const DialogoCargaLogin(
+              estado: DialogoCargaLoginEstado.errorDesconocido),
+        );
+        await Future.delayed(const Duration(seconds: 2));
+        if (context.mounted) Navigator.of(context).pop();
+      }
+
       state = state.copyWhith(isPosting: false);
     }
   }

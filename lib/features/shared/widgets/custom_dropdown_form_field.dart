@@ -49,7 +49,7 @@ class CustomDropdownFormField extends StatelessWidget {
       dropdownStyleData: const DropdownStyleData(
         direction: DropdownDirection.textDirection
       ),
-      items: items.map((item) => DropdownMenuItem(value: item, child: Text(item,style: const TextStyle(fontSize: 16, color: Colors.black),),)).toList(),
+      items: items.map((item) => DropdownMenuItem(value: item, child: Text(item,style: const TextStyle(fontSize: 12, color: Colors.black),),)).toList(),
       onChanged: onChanged,      
       );
   }

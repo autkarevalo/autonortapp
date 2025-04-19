@@ -11,14 +11,17 @@ class KeyValueStorageServiceImpl extends KeyValueStorageService {
 
   @override
   Future<T?> getValue<T>(String key) async {
-    //leer el valor
     final prefs = await getSharedPrefs();
-    if (T == int) {
-      return prefs.getInt(key) as T?;
-    } else if (T == String) {
-      return prefs.getString(key) as T?;
+    final value = prefs.get(key);
+
+    if (value == null) return null;
+
+    if (value is T) {
+      return value as T; // ✅ cast explícito
     } else {
-      throw UnimplementedError('Get no implment for type ${T.runtimeType}');
+      throw UnimplementedError(
+        'Get not implemented or cast failed for key "$key" as type ${T.toString()}',
+      );
     }
   }
 
@@ -32,12 +35,27 @@ class KeyValueStorageServiceImpl extends KeyValueStorageService {
   Future<void> setKeyValue<T>(String key, T value) async {
     final prefs = await getSharedPrefs();
 
-    if (T == int) {
-      prefs.setInt(key, value as int);
-    } else if (T == String) {
-      prefs.setString(key, value as String);
+    // 🔒 Validación de tipo segura
+    if (value is int) {
+      prefs.setInt(key, value);
+    } else if (value is String) {
+      prefs.setString(key, value);
+    } else if (value is bool) {
+      prefs.setBool(key, value);
+    } else if (value is double) {
+      prefs.setDouble(key, value);
+    } else if (value is List<String>) {
+      prefs.setStringList(key, value);
     } else {
-      throw UnimplementedError('set not implemented for type ${T.runtimeType}');
+      // 🧠 Mostrar tipo real para depuración
+      throw UnimplementedError(
+          'set not implemented for type ${value.runtimeType}');
     }
+  }
+
+  @override
+  Future<void> clearAll() async {
+    final prefs = await getSharedPrefs();
+    await prefs.clear();
   }
 }

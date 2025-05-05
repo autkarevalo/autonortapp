@@ -33,12 +33,12 @@ final goRouterProvider = Provider((ref) {
         builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
-        path: '/autonortapp/menu_principal',
+        path: '/autonortapp/menu_principal/:page',
         builder: (context, state) {
-          //final pageIndex = (state.pathParameters[''] ?? 0).toString();
+          final pageIndex = (state.pathParameters['page'] ?? 0).toString();
           return AutMenuPrincipal(
-              //  pageIndex: int.parse(pageIndex),
-              );
+            pageIndex: int.parse(pageIndex),
+          );
         },
       )
     ],
@@ -73,9 +73,9 @@ final goRouterProvider = Provider((ref) {
       if (authStatus == AuthStatus.authenticated) {
         if (isGoinTo == '/login' ||
             isGoinTo == '/registrarse' ||
-            isGoinTo == '/splashchecklogin'||
-             isGoinTo == '/tutorial') {
-          return '/autonortapp/menu_principal';
+            isGoinTo == '/splashchecklogin' ||
+            isGoinTo == '/tutorial') {
+          return '/autonortapp/menu_principal/0';
         }
       }
 

@@ -1,4 +1,4 @@
-import 'package:autonort/features/auth/infraestructura/infraestructura.dart';
+//import 'package:autonort/features/auth/infraestructura/infraestructura.dart';
 import 'package:autonort/features/auth/presentation/providers/auth_provider.dart';
 import 'package:autonort/features/auth/presentation/providers/providers.dart';
 import 'package:autonort/features/auth/presentation/widgets/widgets.dart';
@@ -108,7 +108,7 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
   @override
   Widget build(BuildContext context) {
     final loginForm = ref.watch(loginFormProvider);
-    final loginFormNotifier = ref.read(loginFormProvider.notifier);
+   // final loginFormNotifier = ref.read(loginFormProvider.notifier);
 
     ref.listen(authProvider, (previous, next) {
       if (next.errorMessage.isEmpty) return;
@@ -189,7 +189,7 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
             child: CustomFilledButton(
               text: 'Iniciar Sesión',
               buttonColor: const Color(0xffe30613),
-              onPressed: loginForm.isPosting ? null : () => _submitForm,
+              onPressed: loginForm.isPosting ? null : () => _submitForm(),
             ),
           ),
           const SizedBox(

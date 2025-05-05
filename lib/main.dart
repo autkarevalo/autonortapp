@@ -1,4 +1,5 @@
 import 'package:autonort/config/config.dart';
+import 'package:autonort/features/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,6 +23,9 @@ class MainApp extends ConsumerWidget {
 
     return MaterialApp.router(
       routerConfig: appRouter,
+      builder: (context, child) => InactividadWatcher(
+          timeoutDuration: const Duration(minutes: 2),
+          child: child ?? const SizedBox()),
       theme: AppTheme().getTheme(),
       debugShowCheckedModeBanner: false,
       locale: const Locale('es'),

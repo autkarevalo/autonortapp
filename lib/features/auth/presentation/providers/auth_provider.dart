@@ -73,6 +73,17 @@ class AuthNotifier extends StateNotifier<AuthState> {
         user: null,
         errorMessage: errorMessage);
   }
+
+    // Método para limpiar la lista de detecciones
+  void clearResults() {
+    //state = state.copyWith(
+    //  milista: Milista(code: 0, status: '', message: '', lista: []),
+     // resultado: null,
+      //errorMessage: null,
+    //);
+    // Agregar un print aquí para verificar
+    //print("clearResults() ejecutado - Lista: ${state.milista!.lista}");
+  }
 }
 
 enum AuthStatus { checking, authenticated, notAuthenticated }

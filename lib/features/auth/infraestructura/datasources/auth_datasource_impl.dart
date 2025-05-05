@@ -1,6 +1,7 @@
 import 'package:autonort/config/config.dart';
 import 'package:autonort/features/auth/dominio/dominio.dart';
-import 'package:autonort/features/auth/infraestructura/infraestructura.dart';
+import 'package:autonort/features/auth/infraestructura/mappers/usuario_mapper.dart';
+
 
 class AuthDatasourceImpl extends AuthDatasource {
   final HttpService http = HttpService();

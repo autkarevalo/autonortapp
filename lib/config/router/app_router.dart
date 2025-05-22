@@ -54,10 +54,21 @@ final goRouterProvider = Provider((ref) {
       }
 
       if (authStatus == AuthStatus.notAuthenticated) {
+        if (isGoinTo == '/splashscreen' ||
+            isGoinTo == '/tutorial' ||
+            isGoinTo == '/login' ||
+            isGoinTo == '/registrarse') {
+          return null;
+        }
+
+        // Redirigir primero al Tutorial, y luego al Login
+        return '/tutorial';
+      }
+      /*if (authStatus == AuthStatus.notAuthenticated) {
         if (isGoinTo == '/login' || isGoinTo == '/registrarse') return null;
 
         return '/login';
-      }
+      }*/
       //aqaui puedo aplicar validaciones por ROLES y direccionar a otra pantalla o screen
       /*if (authStatus == AuthStatus.authenticated) {
         if (user?.roles.contains('ciudadano') == true) {

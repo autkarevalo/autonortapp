@@ -12,10 +12,11 @@ class InactividadWatcher extends ConsumerStatefulWidget {
   /// Tiempo máximo de inactividad permitido (por defecto: 15 minutos).
   final Duration timeoutDuration;
 
-  const InactividadWatcher(
-      {super.key,
-      required this.child,
-      this.timeoutDuration = const Duration(minutes: 2)});
+  const InactividadWatcher({
+    super.key,
+    required this.child,
+    this.timeoutDuration = const Duration(minutes: 2),
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -47,6 +48,12 @@ class _InactividadWatcherState extends ConsumerState<InactividadWatcher> {
   void _handleInactivity() async {
     if (!mounted) return;
 
+    // Obtenemos el estado de autenticación
+    final authStatus = ref.read(authProvider).authStatus;
+
+    // Si no está autenticado, no hacemos nada
+    if (authStatus != AuthStatus.authenticated) return;
+
     final messenger = ScaffoldMessenger.maybeOf(context);
 
     messenger?.showSnackBar(
@@ -65,7 +72,7 @@ class _InactividadWatcherState extends ConsumerState<InactividadWatcher> {
             Expanded(
               child: Text(
                 'Al no encontrar actividad, hemos cerrado tu sesión por seguridad.',
-                style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -78,17 +85,15 @@ class _InactividadWatcherState extends ConsumerState<InactividadWatcher> {
 
     if (!mounted) return;
 
-    // Logout global y redirección automática (controlada por go_router redirect)
-    ref
-        .read(authProvider.notifier)
-        .logout('Autonort S.A.C: Sesión cerrada por inactividad');
+    // Logout global y redirección automática
+    ref.read(authProvider.notifier).logout();
   }
 
   @override
   Widget build(BuildContext context) {
     return Listener(
       behavior: HitTestBehavior.translucent,
-      onPointerDown: (_) => _resetTimer(), //detecta cualquier toque
+      onPointerDown: (_) => _resetTimer(), // Detecta cualquier toque
       child: widget.child,
     );
   }

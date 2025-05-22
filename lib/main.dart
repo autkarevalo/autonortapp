@@ -15,6 +15,8 @@ void main() async {
 }
 
 class MainApp extends ConsumerWidget {
+  // 1) Creamos la key estática
+  static final _messengerKey = GlobalKey<ScaffoldMessengerState>();
   const MainApp({super.key});
 
   @override
@@ -23,9 +25,14 @@ class MainApp extends ConsumerWidget {
 
     return MaterialApp.router(
       routerConfig: appRouter,
-      builder: (context, child) => InactividadWatcher(
-          timeoutDuration: const Duration(minutes: 2),
-          child: child ?? const SizedBox()),
+      scaffoldMessengerKey: _messengerKey,
+      builder: (context, child) {
+        return GlobalConnectionListener(
+            messengerKey: _messengerKey,
+            child: InactividadWatcher(
+                timeoutDuration: Duration(minutes: 2),
+                child: child ?? const SizedBox()));
+      },
       theme: AppTheme().getTheme(),
       debugShowCheckedModeBanner: false,
       locale: const Locale('es'),

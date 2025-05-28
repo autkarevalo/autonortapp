@@ -29,6 +29,20 @@ class MenuNotifier extends StateNotifier<MenuState> {
     }
   }
 
+  void selectMenuPorRuta(String ruta) {
+    final allMenus = state.menus
+        .expand(
+            (m) => [m, ...?m.item, ...?m.item?.expand((s) => s.subItem ?? [])])
+        .toList();
+
+    final foundMenu = allMenus.firstWhere(
+      (m) => m.ruta == ruta,
+      orElse: () => state.selectedMenu ?? allMenus.first,
+    );
+
+    state = state.copyWith(selectedMenu: foundMenu);
+  }
+
   void clearMenus() {
     state = state.copyWith(menus: [], message: null);
   }

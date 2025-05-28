@@ -1,0 +1,1 @@
+export 'pantalla_generica.dart';

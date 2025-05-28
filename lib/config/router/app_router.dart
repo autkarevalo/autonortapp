@@ -4,6 +4,7 @@ import 'package:autonort/features/auth/presentation/screens/check_auth_status_sc
 import 'package:autonort/features/auth/presentation/screens/login_screen.dart';
 import 'package:autonort/features/home/presentation/screen/screen.dart';
 import 'package:autonort/features/modules/menu/menu.dart';
+import 'package:autonort/features/shared/shared.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,6 +41,33 @@ final goRouterProvider = Provider((ref) {
             pageIndex: int.parse(pageIndex),
           );
         },
+      ),
+
+      //Rutas dinamicas de 2 niveles
+      GoRoute(
+        path: '/autonortapp/:modulo/:vista',
+        builder: (context, state) {
+          final modulo = state.pathParameters['modulo']!;
+          final vista = state.pathParameters['vista']!;
+          return PantallaGenerica(
+              ruta: 'autonort/$modulo/$vista', modulo: modulo, pagina: vista);
+        },
+      ),
+
+      //*Rutas dinamicas de 3 niveles
+      GoRoute(
+        path: '/autonortapp/:modulo/:seccion/:pagina',
+        builder: (context, state) {
+          final modulo = state.pathParameters['modulo']!;
+          final seccion = state.pathParameters['seccion']!;
+          final pagina = state.pathParameters['pagina']!;
+          return PantallaGenerica(
+            ruta:'/autonortapp/$modulo/$seccion/$pagina',
+            modulo:modulo,
+            seccion:seccion,
+            pagina:pagina
+          );
+        },
       )
     ],
     redirect: (context, state) {
@@ -66,7 +94,7 @@ final goRouterProvider = Provider((ref) {
       }
       /*if (authStatus == AuthStatus.notAuthenticated) {
         if (isGoinTo == '/login' || isGoinTo == '/registrarse') return null;
-
+si
         return '/login';
       }*/
       //aqaui puedo aplicar validaciones por ROLES y direccionar a otra pantalla o screen

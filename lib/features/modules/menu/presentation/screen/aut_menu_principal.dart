@@ -1,5 +1,6 @@
 import 'package:autonort/features/modules/menu/presentation/views/views.dart';
-import 'package:autonort/features/modules/menu/presentation/widgets/widgets.dart';
+import 'package:autonort/features/shared/shared.dart';
+
 import 'package:flutter/material.dart';
 
 class AutMenuPrincipal extends StatelessWidget {
@@ -16,12 +17,15 @@ class AutMenuPrincipal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
+    return AutScaffoldConDrawer(
+      title: '',
+      mostrarAppBar: true, // AppBar oculto en esta vista
+      mostrarBottomNavigation: true, // Barra de navegación visible
+      child: IndexedStack(
         index: pageIndex,
         children: viewRoutes,
       ),
-      bottomNavigationBar: CustomButtonNavigation(currentIndex: pageIndex),
+  
     );
   }
 }

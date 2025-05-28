@@ -7,3 +7,4 @@ export 'providers/connectivity_provider.dart';
 export 'providers/server_provider.dart';
 export 'providers/connectivity_stream_provider.dart';
 export 'providers/server_health_stream_provider.dart';
+export 'views/views.dart';

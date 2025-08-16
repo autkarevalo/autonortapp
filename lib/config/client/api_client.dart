@@ -29,6 +29,8 @@ class ApiClient {
           final token = await keyValueStorage.getValue<String>('token');
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';
+          } else {
+             print('>> ⚠️ Token no encontrado, se enviará sin autenticación');
           }
 
           return handler.next(options);

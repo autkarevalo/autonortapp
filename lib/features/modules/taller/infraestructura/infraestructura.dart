@@ -1,0 +1,9 @@
+export 'mappers/tecnico_mapper.dart';
+export 'mappers/trabajos_mapper.dart';
+export 'mappers/motivos_mapper.dart';
+export 'mappers/operainiciotrabajo_mapper.dart';
+export 'mappers/operaparalizatrabajo_mapper.dart';
+export 'mappers/operafintrabajo_mapper.dart';
+export 'mappers/operareiniciotrabajo_mapper.dart';
+export 'datasource/taller_datasource_impl.dart';
+export 'repositories/taller_repository_impl.dart';

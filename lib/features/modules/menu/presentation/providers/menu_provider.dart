@@ -44,11 +44,17 @@ class MenuNotifier extends StateNotifier<MenuState> {
   }
 
   void clearMenus() {
-    state = state.copyWith(menus: [], message: null);
+    state = state.copyWith(menus: [], message: null, selectedMenu: null);
   }
 
   void selectMenu(Menu? menu) {
     state = state.copyWith(selectedMenu: menu);
+  }
+
+  void clearSelectedMenu() {
+      print('[CLEAR] Antes: ${state.selectedMenu?.opcion}');
+    state = state.copyWith(selectedMenu: null);
+    print('[CLEAR] Después: ${state.selectedMenu?.opcion}');
   }
 }
 
@@ -73,5 +79,5 @@ class MenuState {
           isLoading: isLoading ?? this.isLoading,
           menus: menus ?? this.menus,
           message: message ?? this.message,
-          selectedMenu: selectedMenu ?? this.selectedMenu);
+          selectedMenu: selectedMenu);
 }

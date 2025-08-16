@@ -1,6 +1,5 @@
 import 'package:autonort/features/auth/presentation/providers/auth_provider.dart';
 import 'package:autonort/features/modules/menu/presentation/providers/provider.dart';
-import 'package:autonort/features/shared/widgets/aut_scaffold_con_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,7 +13,7 @@ class AutMenuPrincipalView extends ConsumerStatefulWidget {
 
 class _AutMenuPrincipalViewState extends ConsumerState<AutMenuPrincipalView> {
   bool _isInit = false;
-  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+  //final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
 
   @override
   void didChangeDependencies() {

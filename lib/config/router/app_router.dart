@@ -50,7 +50,7 @@ final goRouterProvider = Provider((ref) {
           final modulo = state.pathParameters['modulo']!;
           final vista = state.pathParameters['vista']!;
           return PantallaGenerica(
-              ruta: 'autonort/$modulo/$vista', modulo: modulo, pagina: vista);
+              ruta: '/autonortapp/$modulo/$vista', modulo: modulo, pagina: vista);
         },
       ),
 

@@ -1,8 +1,10 @@
 import 'package:autonort/config/config.dart';
 import 'package:autonort/features/modules/menu/dominio/dominio.dart';
+import 'package:autonort/features/modules/menu/presentation/providers/menu_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AutMenuLateralWidget extends StatelessWidget {
+class AutMenuLateralWidget extends ConsumerWidget {
   final List<Menu> menus;
   final void Function(String ruta) onTap;
   // ✅ Nuevo: datos del usuario autenticado
@@ -21,7 +23,7 @@ class AutMenuLateralWidget extends StatelessWidget {
       required this.selectedMenu});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -33,7 +35,7 @@ class AutMenuLateralWidget extends StatelessWidget {
             photoUrl: photoUrl,
           ),
 
-          ...menus.map((menu) => _buildMenuItem(menu)),
+          ...menus.map((menu) => _buildMenuItem(menu,ref)),
         ],
       ),
     );
@@ -112,7 +114,8 @@ class AutMenuLateralWidget extends StatelessWidget {
             )));
   }
 
-  Widget _buildMenuItem(Menu menu) {
+  Widget _buildMenuItem(Menu menu, WidgetRef ref) {
+    final selectedMenu = ref.watch(menuProvider).selectedMenu;
     if (menu.item != null && menu.item!.isNotEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -124,12 +127,15 @@ class AutMenuLateralWidget extends StatelessWidget {
             child: ExpansionTile(
               tilePadding: const EdgeInsets.symmetric(horizontal: 14),
               leading: Icon(menu.iconData, color: Colors.grey[700]),
-              title: Text(menu.opcion,
-              style: const TextStyle(fontWeight: FontWeight.bold),),
+              title: Text(
+                menu.opcion,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
               children: menu.item!.map((subMenu) {
                 if (subMenu.subItem != null && subMenu.subItem!.isNotEmpty) {
                   return Theme(
-                    data: ThemeData().copyWith(dividerColor: Colors.transparent),
+                    data:
+                        ThemeData().copyWith(dividerColor: Colors.transparent),
                     child: ExpansionTile(
                       backgroundColor: const Color(0xFFF5F5F5),
                       leading: Column(
@@ -162,7 +168,7 @@ class AutMenuLateralWidget extends StatelessWidget {
                                       color: Colors.grey.shade300,
                                     ),
                                     const SizedBox(width: 8),
-                                    Expanded(child: _buildMenuTitle(subsub)),
+                                    Expanded(child: _buildMenuTitle(subsub,selectedMenu)),
                                   ],
                                 ),
                               ))
@@ -170,7 +176,7 @@ class AutMenuLateralWidget extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return _buildMenuTitle(subMenu);
+                  return _buildMenuTitle(subMenu,selectedMenu);
                 }
               }).toList(),
             ),
@@ -178,13 +184,13 @@ class AutMenuLateralWidget extends StatelessWidget {
         ),
       );
     } else {
-      return _buildMenuTitle(menu);
+      return _buildMenuTitle(menu,selectedMenu);
     }
   }
 
-   Widget _buildMenuTitle(Menu item) {
+  Widget _buildMenuTitle(Menu item,Menu? selectedMenu) {
     final bool isSelected = selectedMenu?.idmenu == item.idmenu;
-
+print('[WIDGET] Dibujando ${item.opcion}, seleccionado: $isSelected');
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
       child: InkWell(
@@ -193,7 +199,9 @@ class AutMenuLateralWidget extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: isSelected ? const Color.fromRGBO(229, 57, 53, 0.1) : scaffoldBackgroundColor,
+            color: isSelected
+                ? const Color.fromRGBO(229, 57, 53, 0.1)
+                : scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
@@ -205,7 +213,8 @@ class AutMenuLateralWidget extends StatelessWidget {
                   item.opcion,
                   style: TextStyle(
                     fontSize: 14,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight:
+                        isSelected ? FontWeight.bold : FontWeight.normal,
                     color: isSelected ? Colors.red : null,
                   ),
                 ),

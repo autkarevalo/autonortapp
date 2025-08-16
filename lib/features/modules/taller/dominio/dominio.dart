@@ -1,0 +1,9 @@
+export 'entidades/tecnicos.dart';
+export 'datasource/taller_datasource.dart';
+export 'repositorio/taller_repositorio.dart';
+export 'entidades/trabajos.dart';
+export 'entidades/motivos.dart';
+export 'entidades/operainiciotrabajo.dart';
+export 'entidades/operaparalizatrabajo.dart';
+export 'entidades/operafintrabajo.dart';
+export 'entidades/operareiniciotrabajo.dart';

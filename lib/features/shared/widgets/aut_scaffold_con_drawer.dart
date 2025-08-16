@@ -81,7 +81,7 @@ class _AutScaffoldConDrawerState extends ConsumerState<AutScaffoldConDrawer> {
         fullName: user?.nombre ?? 'Usuario',
         email: user?.id ?? 'User',
         photoUrl: '',
-        selectedMenu: menuState.selectedMenu,
+        selectedMenu: isMenuPrincipal ? null : menuState.selectedMenu,
       ),
       appBar: (!isMenuPrincipal && widget.mostrarAppBar)
           ? AppBar(

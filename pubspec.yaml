@@ -1,12 +1,13 @@
 name: autonort
 description: "A new Flutter project."
 publish_to: 'none'
-version: 0.1.6
+version: 0.1.7
 
 environment:
   sdk: ^3.6.0
 
 dependencies:
+  intl: ^0.20.2
   animate_do: ^4.2.0
   connectivity_plus: ^6.1.4
   dartz: ^0.10.1
